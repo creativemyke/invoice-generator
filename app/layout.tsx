@@ -17,10 +17,8 @@ export const metadata: Metadata = {
       "en-US": "/en-US",
     },
   },
-  title:
-    "Free Invoice Generator: Create & Send Professional Invoices in Minutes",
-  description:
-    "Get paid on time with our free invoice maker. Create professional invoices & get them to clients instantly.",
+  title: "CreativeMyke Invoice Generator",
+  description: "Create professional invoices & get them to clients instantly.",
   keywords: [
     "invoice generator",
     "free invoice template",
@@ -30,10 +28,9 @@ export const metadata: Metadata = {
   ],
   robots: "index, follow",
   openGraph: {
-    title:
-      "Free Invoice Generator: Create & Send Professional Invoices in Minutes",
+    title: "CreativeMyke Invoice Generator",
     description:
-      "Get paid on time with our free invoice maker. Create professional invoices & get them to clients instantly.",
+      "Create professional invoices & get them to clients instantly.",
     url: process.env.NEXT_PUBLIC_URL,
     type: "website",
     images: "/og-image.jpeg",
@@ -41,8 +38,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@ThatsPranav",
-    creator: "@ThatsPranav",
+    site: "@creativemyke",
+    creator: "@creativemyke",
   },
 };
 
