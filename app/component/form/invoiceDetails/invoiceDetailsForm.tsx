@@ -9,6 +9,12 @@ import { useGetValue } from "@/app/hooks/useGetValue";
 import { Controller } from "react-hook-form";
 import { getItemValue } from "@/lib/getInitialValue";
 
+type Item = {
+  itemDescription: string;
+  amount?: number;
+  qty?: number;
+};
+
 export const InvoiceDetailsForm = () => {
   const value = useGetValue("currency", "INR");
   const currencyDetails = currencyList.find(
@@ -168,6 +174,54 @@ export const InvoiceDetailsForm = () => {
                 placeholder="0%"
                 variableName="tax"
               />
+              {/* Only show WHT and Balance Payable for NGN */}
+              {currencyDetails?.currencyShortForm === "NGN" && (
+                <>
+                  <CustomNumberInput
+                    label="WHT (Withholding Tax)"
+                    placeholder="0%"
+                    variableName="wht"
+                  />
+                  {/* Balance Payable (read-only, calculated) */}
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Balance Payable
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full border rounded px-3 py-2 bg-gray-100 text-gray-700 cursor-not-allowed"
+                      value={(() => {
+                        const subtotal =
+                          value && value.length
+                            ? value.reduce((total: number, item: Item) => {
+                                const quantity = item.qty ? +item.qty : 1;
+                                const amount = item.amount ? +item.amount : 0;
+                                return total + quantity * amount;
+                              }, 0)
+                            : 0;
+                        const discount = window.localStorage.getItem("discount")
+                          ? +window.localStorage.getItem("discount")!
+                          : 0;
+                        const tax = window.localStorage.getItem("tax")
+                          ? +window.localStorage.getItem("tax")!
+                          : 0;
+                        const wht = window.localStorage.getItem("wht")
+                          ? +window.localStorage.getItem("wht")!
+                          : 0;
+                        const discountAmount = subtotal - discount;
+                        const taxAmount = discountAmount * (tax / 100);
+                        const totalAmount = discountAmount + taxAmount;
+                        const whtAmount = subtotal * (wht / 100);
+                        const balancePayable = totalAmount - whtAmount;
+                        return `${
+                          currencyDetails?.currencySymbol || ""
+                        }${balancePayable.toLocaleString()}`;
+                      })()}
+                      readOnly
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

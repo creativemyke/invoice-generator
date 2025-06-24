@@ -3,9 +3,20 @@ import React from "react";
 import { currencyList } from "@/lib/currency";
 import { ChevronDown } from "lucide-react";
 
-export const InvoiceDetailsPreview: React.FC<
-  InvoiceItemDetails & { onClick?: (step: string) => void }
-> = ({ note, discount, taxRate, items, currency = "INR", onClick }) => {
+interface InvoiceDetailsPreviewProps extends InvoiceItemDetails {
+  onClick?: (step: string) => void;
+  wht?: number;
+}
+
+export const InvoiceDetailsPreview: React.FC<InvoiceDetailsPreviewProps> = ({
+  note,
+  discount,
+  taxRate,
+  items,
+  currency = "INR",
+  onClick,
+  wht,
+}) => {
   const currencyType = currency;
   const currencyDetails = currencyList.find(
     (currency) => currency.value.toLowerCase() === currencyType.toLowerCase()
@@ -14,6 +25,9 @@ export const InvoiceDetailsPreview: React.FC<
   const discountAmount = subtotal - (discount ? +discount : 0);
   const taxAmount = discountAmount * ((taxRate ? +taxRate : 0) / 100);
   const totalAmount = discountAmount + taxAmount;
+  const whtRate = wht ? +wht : 0;
+  const whtAmount = subtotal * (whtRate / 100);
+  const balancePayable = totalAmount - whtAmount;
 
   return (
     <div
@@ -132,6 +146,30 @@ export const InvoiceDetailsPreview: React.FC<
               {addCommasToNumber(totalAmount)}
             </p>
           </div>
+          {currencyDetails?.currencyShortForm === "NGN" && whtRate > 0 && (
+            <div className="flex justify-between items-center mx-10 border-b border-dashed py-3">
+              <p className="flex truncate text-xs font-medium text-gray-600">
+                WHT ({whtRate}%)
+              </p>
+              <p className="flex truncate text-xs font-medium text-gray-600">
+                {currencyDetails?.currencySymbol}
+                {addCommasToNumber(whtAmount)}
+              </p>
+            </div>
+          )}
+          {currencyDetails?.currencyShortForm === "NGN" && (
+            <div className="flex justify-between items-center px-10 py-3">
+              <div>
+                <p className="flex truncate text-xs font-bold text-gray-800">
+                  Balance Payable
+                </p>
+              </div>
+              <p className="flex truncate text-md font-bold">
+                {currencyDetails?.currencySymbol}
+                {addCommasToNumber(balancePayable)}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -5,6 +5,15 @@ import { PaymentDetailsPreview } from "@/app/component/form/paymentDetails/payme
 import { YourDetailsPreview } from "@/app/component/form/yourDetails/yourDetailsPreview";
 import { ChevronDown } from "lucide-react";
 
+interface PreviewDetailsProps {
+  yourDetails: YourDetails;
+  companyDetails: CompanyDetails;
+  invoiceDetails: InvoiceItemDetails & { wht?: number };
+  paymentDetails: PaymentDetails;
+  invoiceTerms: InvoiceTerms;
+  onClick?: (step: string) => void;
+}
+
 export const PreviewDetails = ({
   yourDetails,
   companyDetails,
@@ -12,14 +21,7 @@ export const PreviewDetails = ({
   paymentDetails,
   invoiceTerms,
   onClick,
-}: {
-  yourDetails: YourDetails;
-  companyDetails: CompanyDetails;
-  invoiceDetails: InvoiceItemDetails;
-  paymentDetails: PaymentDetails;
-  invoiceTerms: InvoiceTerms;
-  onClick?: (step: string) => void;
-}) => (
+}: PreviewDetailsProps) => (
   <div className="overflow-x-auto">
     <div className="w-[595px] h-[842px] bg-white rounded-2xl border border-dashed justify-center items-center">
       <InvoiceTermsPreview {...invoiceTerms} onClick={onClick} />
@@ -55,7 +57,11 @@ export const PreviewDetails = ({
       </div>
       <div className="flex flex-col justify-between">
         <div className="border-b justify-between border-dashed">
-          <InvoiceDetailsPreview {...invoiceDetails} onClick={onClick} />
+          <InvoiceDetailsPreview
+            {...invoiceDetails}
+            wht={invoiceDetails.wht}
+            onClick={onClick}
+          />
         </div>
         <div className="">
           <PaymentDetailsPreview {...paymentDetails} onClick={onClick} />

@@ -6,6 +6,15 @@ import { InvoiceDetailsPdf } from "./invoiceDetails/invoiceDetailsPdf";
 import { PaymentDetailsPdf } from "./paymentDetails/paymentDetailsPdf";
 import { pdfUtils } from "@/lib/pdfStyles";
 
+interface PdfDetailsProps {
+  yourDetails: YourDetails;
+  companyDetails: CompanyDetails;
+  invoiceDetails: InvoiceItemDetails & { wht?: number };
+  paymentDetails: PaymentDetails;
+  invoiceTerms: InvoiceTerms;
+  countryImageUrl: string;
+}
+
 export const PdfDetails = ({
   yourDetails,
   companyDetails,
@@ -13,14 +22,7 @@ export const PdfDetails = ({
   paymentDetails,
   invoiceTerms,
   countryImageUrl,
-}: {
-  yourDetails: YourDetails;
-  companyDetails: CompanyDetails;
-  invoiceDetails: InvoiceItemDetails;
-  paymentDetails: PaymentDetails;
-  invoiceTerms: InvoiceTerms;
-  countryImageUrl: string;
-}) => (
+}: PdfDetailsProps) => (
   <View>
     <InvoiceTermsPdf {...invoiceTerms} />
     <View
@@ -36,7 +38,7 @@ export const PdfDetails = ({
     </View>
     <View>
       <View style={pdfUtils.borderBottom}>
-        <InvoiceDetailsPdf {...invoiceDetails} />
+        <InvoiceDetailsPdf {...invoiceDetails} wht={invoiceDetails.wht} />
       </View>
       <View>
         <PaymentDetailsPdf

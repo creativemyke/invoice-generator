@@ -3,12 +3,17 @@ import { Text, View } from "@react-pdf/renderer";
 import { currencyList } from "@/lib/currency";
 import { pdfTypography, pdfUtils } from "@/lib/pdfStyles";
 
-export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
+interface InvoiceDetailsPdfProps extends InvoiceItemDetails {
+  wht?: number;
+}
+
+export const InvoiceDetailsPdf: React.FC<InvoiceDetailsPdfProps> = ({
   note,
   discount,
   taxRate,
   items,
   currency = "INR",
+  wht,
 }) => {
   const currencyType = currency;
   const currencyDetails = currencyList.find(
@@ -18,6 +23,9 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
   const discountAmount = subtotal - (discount ? +discount : 0);
   const taxAmount = discountAmount * ((taxRate ? +taxRate : 0) / 100);
   const totalAmount = discountAmount + taxAmount;
+  const whtRate = wht ? +wht : 0;
+  const whtAmount = subtotal * (whtRate / 100);
+  const balancePayable = totalAmount - whtAmount;
 
   return (
     <View>
@@ -188,6 +196,60 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
               {addCommasToNumber(totalAmount)}
             </Text>
           </View>
+          {currencyDetails?.currencyShortForm === "NGN" && whtRate > 0 && (
+            <View
+              style={{
+                marginHorizontal: 40,
+                paddingVertical: 14,
+                ...pdfUtils.flexRowItemCenter,
+                ...pdfUtils.borderBottom,
+              }}
+            >
+              <Text style={{ ...pdfTypography.itemDescription, flex: 1 }}>
+                WHT ({whtRate}%)
+              </Text>
+              <Text
+                style={{
+                  ...pdfTypography.itemDescription,
+                  flex: 1,
+                  textAlign: "right",
+                }}
+              >
+                {currencyDetails?.currencySymbol}
+                {addCommasToNumber(whtAmount)}
+              </Text>
+            </View>
+          )}
+          {currencyDetails?.currencyShortForm === "NGN" && (
+            <View
+              style={{
+                marginHorizontal: 40,
+                paddingVertical: 14,
+                ...pdfUtils.flexRowItemCenter,
+              }}
+            >
+              <Text
+                style={{
+                  ...pdfTypography.itemDescription,
+                  flex: 1,
+                  fontWeight: "bold",
+                }}
+              >
+                Balance Payable
+              </Text>
+              <Text
+                style={{
+                  ...pdfTypography.amount,
+                  textAlign: "right",
+                  flex: 1,
+                  fontWeight: "bold",
+                }}
+              >
+                {currencyDetails?.currencySymbol}
+                {addCommasToNumber(balancePayable)}
+              </Text>
+            </View>
+          )}
         </View>
       </View>
     </View>
