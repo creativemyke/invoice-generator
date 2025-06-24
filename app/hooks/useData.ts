@@ -39,7 +39,8 @@ export const useData = () => {
 
   const currency = useGetValue("currency") || "INR";
 
-  const wht = useGetValue("wht");
+  const whtRaw = useGetValue("wht");
+  const wht = whtRaw ? +whtRaw : undefined;
 
   const invoiceTerms = {
     invoiceNumber,
