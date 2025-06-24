@@ -34,5 +34,10 @@ export const PaymentDetailsForm = () => (
       placeholder="HSBCINAA123"
       variableName="swiftCode"
     />
+    <CustomTextInput
+      label="TIN"
+      placeholder="Tax Identification Number"
+      variableName="tin"
+    />
   </div>
 );

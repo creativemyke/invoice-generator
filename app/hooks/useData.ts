@@ -42,6 +42,8 @@ export const useData = () => {
   const whtRaw = useGetValue("wht");
   const wht = whtRaw ? +whtRaw : undefined;
 
+  const tin = useGetValue("tin");
+
   const invoiceTerms = {
     invoiceNumber,
     issueDate,
@@ -65,6 +67,7 @@ export const useData = () => {
     swiftCode: swiftCode,
     ifscCode: ifscCode,
     currency,
+    tin,
   };
 
   const yourDetails = {

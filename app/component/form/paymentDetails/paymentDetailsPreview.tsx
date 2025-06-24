@@ -1,9 +1,12 @@
 import { currencyList } from "@/lib/currency";
 import { ChevronDown } from "lucide-react";
 
-export const PaymentDetailsPreview: React.FC<
-  PaymentDetails & { onClick?: (step: string) => void }
-> = ({
+interface PaymentDetailsPreviewProps extends PaymentDetails {
+  onClick?: (step: string) => void;
+  tin?: string;
+}
+
+export const PaymentDetailsPreview: React.FC<PaymentDetailsPreviewProps> = ({
   bankName,
   accountNumber,
   accountName,
@@ -12,6 +15,7 @@ export const PaymentDetailsPreview: React.FC<
   ifscCode,
   currency = "INR",
   onClick,
+  tin,
 }) => {
   const currencyDetails = currencyList.find(
     (currencyDetails) =>
@@ -101,6 +105,14 @@ export const PaymentDetailsPreview: React.FC<
               </p>
               <p className="flex truncate text-xs font-medium text-gray-600">
                 {ifscCode}
+              </p>
+            </div>
+          )}
+          {tin && (
+            <div className="mb-2 grid grid-cols-2 items-center">
+              <p className="truncate text-xs font-medium text-gray-500">TIN</p>
+              <p className="flex truncate text-xs font-medium text-gray-600">
+                {tin}
               </p>
             </div>
           )}
