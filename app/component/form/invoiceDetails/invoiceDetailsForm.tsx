@@ -174,7 +174,6 @@ export const InvoiceDetailsForm = () => {
                 placeholder="0%"
                 variableName="tax"
               />
-              {/* Only show WHT and Balance Payable for NGN */}
               {currencyDetails?.currencyShortForm === "NGN" && (
                 <>
                   <CustomNumberInput
