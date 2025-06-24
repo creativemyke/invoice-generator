@@ -6,7 +6,7 @@ import { pdfTypography, pdfUtils } from "@/lib/pdfStyles";
 
 interface PaymentDetailsPdfProps extends PaymentDetails {
   countryImageUrl: string;
-  tin: string;
+  tin?: string;
 }
 
 export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
