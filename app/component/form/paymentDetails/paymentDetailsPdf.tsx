@@ -6,6 +6,7 @@ import { pdfTypography, pdfUtils } from "@/lib/pdfStyles";
 
 interface PaymentDetailsPdfProps extends PaymentDetails {
   countryImageUrl: string;
+  tin: string;
 }
 
 export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
@@ -17,6 +18,7 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
   ifscCode,
   currency = "INR",
   countryImageUrl,
+  tin,
 }) => {
   const currencyDetails = currencyList.find(
     (currencyDetail) =>
@@ -116,6 +118,20 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
                 }}
               >
                 {routingCode}
+              </Text>
+            </View>
+          ) : undefined}
+          {tin ? (
+            <View style={pdfUtils.flexRowItemCenter}>
+              <Text style={pdfTypography.paymentTitle}>TIN</Text>
+              <Text
+                style={{
+                  flex: 1,
+                  ...pdfTypography.itemDescription,
+                  paddingLeft: 45,
+                }}
+              >
+                {tin}
               </Text>
             </View>
           ) : undefined}
